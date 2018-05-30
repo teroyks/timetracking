@@ -1,8 +1,4 @@
-[
-	{
-		"name": "TestProject"
-	},
-	{
-		"name": "DemoProject"
-	}
-]
+{
+  "DemoProject": {},
+  "Studying": {}
+}

@@ -2,7 +2,9 @@
 """Handles the projects list"""
 
 import json
+import os.path
 import sys
+import unittest
 
 import config
 
@@ -12,11 +14,11 @@ class ProjectError(Exception):
     """Generic exception for the projects module"""
     pass
 
-_data = []
+_data = {} # projects cache
 
 def names():
     """Lists names of all configured projects"""
-    return [project['name'] for project in _load_projects()]
+    return list(_load_projects().keys())
 
 def exists(name):
     """Returns true if project with given name is configured"""
@@ -28,6 +30,10 @@ def _load_projects():
     global _data
 
     if not _data:
+        if not os.path.isfile(PROJECTS_FILE):
+            print("Creating projects file", PROJECTS_FILE)
+            _write_projects_file({})
+
         try:
             with open(PROJECTS_FILE) as file:
                 _data = json.load(file)
@@ -41,11 +47,53 @@ def _load_projects():
 
     return _data
 
+def _add_project(name):
+    """Appends project with name to projects"""
+    if exists(name):
+        raise ProjectError("Project {} already defined")
+    projects = _load_projects()
+    projects[name] = {} # add data values later
+    _write_projects_file(projects)
+
+def _write_projects_file(contents):
+    """Writes projects data to JSON file"""
+
+    global _data
+
+    with open(PROJECTS_FILE, "w", encoding="utf-8") as f:
+        json.dump(contents, f, sort_keys = True, indent = 2)
+    _data = {} # reset cache
+
+class TestProjectFileHandling(unittest.TestCase):
+
+    def setUp(self):
+        _write_projects_file({})
+
+    def test_project_file_is_empty(self):
+        self.assertEqual({}, _load_projects(), "projects file should be empty")
+
+    def test_create_project(self):
+        _add_project("TestProject")
+        self.assertEqual({"TestProject": {}}, _load_projects(), "should add first project")
+        _add_project("DemoProject")
+        self.assertEqual({"DemoProject": {}, "TestProject": {}}, _load_projects(), "should add second project and list in alphabetical order")
+
+    def test_names(self):
+        _add_project("foo")
+        _add_project("bar")
+        self.assertEqual(["bar", "foo"], names(), "should return project names as alphabetical list")
+
+    def test_exists(self):
+        _add_project("ProjectExists")
+        self.assertTrue(exists("ProjectExists"))
+        self.assertFalse(exists("ProjectDoesNotExist"))
+
+    def test_add_duplicate(self):
+        _add_project("foo")
+        with self.assertRaises(ProjectError):
+            _add_project("foo")
+
 if __name__ == "__main__":
-    try:
-        print(_load_projects())
-        print(names())
-        print(exists("TestProject"))
-        print(exists("NoProject"))
-    except ProjectError as error:
-        print(error)
+    PROJECTS_FILE = 'test_projects.json'
+
+    unittest.main()
