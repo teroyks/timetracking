@@ -1,0 +1,35 @@
+.\" Manpage for timetracking
+.\" Contact tero.public@gmail.com to correct errors or typos.
+.TH man 6 "25 May 2018" "0.1" "timetracking man page"
+.SH NAME
+timetracking \- track time spent on projects
+.SH SYNOPSIS
+  timetracking -p PROJECTNAME [-c] start
+  timetracking [-p PROJECTNAME] end
+  timetracking [-a] list
+  timetracking -h
+.SH DESCRIPTION
+.B timetracking
+keeps tabs on projects you are currently working on.
+.TP
+.BR start
+Start tracking a project. Stops tracking currently active projects unless option -c is specified.
+.TP
+.BR end
+Stop tracking a single project, or all active projects if project name not given.
+.TP
+.BR list
+List all defined projects, or only currently tracked ones with the -a option.
+.SH OPTIONS
+.TP
+.BR \-p ", " \-\-project =\fIPROJECTNAME\fR
+Define the name of tracked project.
+.TP
+.BR \-c ", " \-\-continue
+Also continue tracking other active projects.
+.TP
+.BR \-a ", " \-\-active
+List only projects currently being tracked.
+.TP
+.BR \-h ", " \-\-help
+Print help message and exit.
