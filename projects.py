@@ -47,7 +47,7 @@ def _load_projects():
 
     return _data
 
-def _add_project(name):
+def add_project(name):
     """Appends project with name to projects"""
     if exists(name):
         raise ProjectError("Project {} already defined")
@@ -73,25 +73,29 @@ class TestProjectFileHandling(unittest.TestCase):
         self.assertEqual({}, _load_projects(), "projects file should be empty")
 
     def test_create_project(self):
-        _add_project("TestProject")
+        add_project("TestProject")
         self.assertEqual({"TestProject": {}}, _load_projects(), "should add first project")
-        _add_project("DemoProject")
+        add_project("DemoProject")
         self.assertEqual({"DemoProject": {}, "TestProject": {}}, _load_projects(), "should add second project and list in alphabetical order")
+    
+    def test_add_project_with_named_parameters(self):
+        add_project(name="NamedTestProject")
+        self.assertEqual({"NamedTestProject": {}}, _load_projects())
 
     def test_names(self):
-        _add_project("foo")
-        _add_project("bar")
+        add_project("foo")
+        add_project("bar")
         self.assertEqual(["bar", "foo"], names(), "should return project names as alphabetical list")
 
     def test_exists(self):
-        _add_project("ProjectExists")
+        add_project("ProjectExists")
         self.assertTrue(exists("ProjectExists"))
         self.assertFalse(exists("ProjectDoesNotExist"))
 
     def test_add_duplicate(self):
-        _add_project("foo")
+        add_project("foo")
         with self.assertRaises(ProjectError):
-            _add_project("foo")
+            add_project("foo")
 
 if __name__ == "__main__":
     PROJECTS_FILE = 'test_projects.json'

@@ -5,6 +5,7 @@ Usage:
   timetracking -p PROJECTNAME [-c] start
   timetracking [-p PROJECTNAME] end
   timetracking [-a] list
+  timetracking add
   timetracking -h
 
 Options:
@@ -53,6 +54,8 @@ def main(argv):
             tracker.stop(project_name)
         else:
             tracker.stop_all()
+    elif args['add']:
+        add_new_project()
 
 def load_project(project_name):
     """Sets project name after checking it is valid"""
@@ -61,6 +64,16 @@ def load_project(project_name):
         sys.exit(1)
     else:
         return project_name
+
+def add_new_project():
+    """Asks for project data and adds the project"""
+    project_name = input("Project name: ").replace(' ', '')
+    try:
+        projects.add_project(project_name)
+    except projects.ProjectError as e:
+        print("Cannot add project {}, error: {}".format(project_name, e))
+        print(e.args)
+        print(type(e).__name__)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
