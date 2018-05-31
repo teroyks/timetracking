@@ -6,9 +6,10 @@ START - starts tracking
 STOP  - stops tracking
 """
 
-import datetime
+from datetime import datetime, timedelta
 
 import config
+import math
 
 TRACKING_FILE = config.get_value("tracking_file")
 
@@ -58,6 +59,28 @@ def stop(project_name):
     
     _log_command("STOP", project_name)
 
+def report():
+    """Creates a report for time used in projects"""
+    started = {}
+    with open(TRACKING_FILE) as f:
+        for line in f:
+            date, time, command, project_name = line.split()
+            # print("date: {}\ttime: {}\tcommand: {}\tproject: {}".format(date, time, command, project_name))
+
+            if command == "START":
+                started[project_name] = _to_datetime(date, time)
+            if command == "STOP":
+                elapsed = _to_datetime(date, time) - started[project_name]
+                if elapsed.days:
+                    print("Error: tracking up for more than a day: {}".format(line))
+                else:
+                    print("{}  {:>15}:  {}".format(date, project_name, elapsed))
+                del started[project_name]
+
+        if started:
+            print("Active projects:")
+            print(started)
+
 def stop_all():
     """Ends tracking all active projects"""
     for project_name in currently_tracked_projects():
@@ -65,4 +88,10 @@ def stop_all():
 
 def _log_command(command, project_name):
     with open(TRACKING_FILE, "a") as f:
-        f.write("{} {} {}\n".format(datetime.datetime.now(), command, project_name))
+        f.write("{} {} {}\n".format(datetime.now().isoformat(sep=' ', timespec='minutes'), command, project_name))
+
+def _to_datetime(date, time):
+    return datetime.strptime("{} {}".format(date, time), '%Y-%m-%d %H:%M')
+
+if __name__ == "__main__":
+    report()
