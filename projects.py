@@ -67,6 +67,8 @@ def _write_projects_file(contents):
 class TestProjectFileHandling(unittest.TestCase):
 
     def setUp(self):
+        global PROJECTS_FILE
+        PROJECTS_FILE = 'test_projects.json'
         _write_projects_file({})
 
     def test_project_file_is_empty(self):
@@ -98,6 +100,4 @@ class TestProjectFileHandling(unittest.TestCase):
             add_project("foo")
 
 if __name__ == "__main__":
-    PROJECTS_FILE = 'test_projects.json'
-
     unittest.main()
