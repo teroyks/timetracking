@@ -62,6 +62,8 @@ def stop(project_name):
 def report():
     """Creates a report for time used in projects"""
     started = {}
+    daily_totals = {}
+
     with open(TRACKING_FILE) as f:
         for line in f:
             date, time, command, project_name = line.split()
@@ -74,12 +76,19 @@ def report():
                 if elapsed.days:
                     print("Error: tracking up for more than a day: {}".format(line))
                 else:
-                    print("{}  {:>15}:  {}".format(date, project_name, elapsed))
+                    daily_totals[date][project_name] = \
+                        daily_totals.setdefault(date, {}).get(project_name, timedelta(0)) \
+                        + _round_timedelta(elapsed, 15)
                 del started[project_name]
 
         if started:
             print("Active projects:")
             print(started)
+
+    for date, project_totals in daily_totals.items():
+        print(datetime.strptime(date, '%Y-%m-%d').strftime('%a %-d.%-m.%Y'))
+        for project_name, project_total in project_totals.items():
+            print("\t{:>15}:  {}".format(project_name, project_total))
 
 def stop_all():
     """Ends tracking all active projects"""
@@ -92,6 +101,15 @@ def _log_command(command, project_name):
 
 def _to_datetime(date, time):
     return datetime.strptime("{} {}".format(date, time), '%Y-%m-%d %H:%M')
+
+def _round_timedelta(delta, round_to_mins):
+    """Parses timedelta to hours and minutes
+
+    Rounds the minute amount up to round_to_mins
+    """
+    hours, mins = delta.seconds // 3600, delta.seconds % 3600 // 60
+    mins = math.ceil(mins / round_to_mins) * round_to_mins
+    return timedelta(hours=hours, minutes=mins)
 
 if __name__ == "__main__":
     report()
