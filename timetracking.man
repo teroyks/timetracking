@@ -7,6 +7,7 @@ timetracking \- track time spent on projects
   timetracking -p PROJECTNAME [-c] start
   timetracking [-p PROJECTNAME] end
   timetracking [-a] list
+  timetracking add
   timetracking -h
 .SH DESCRIPTION
 .B timetracking
@@ -20,6 +21,9 @@ Stop tracking a single project, or all active projects if project name not given
 .TP
 .BR list
 List all defined projects, or only currently tracked ones with the -a option.
+.TP
+.BR add
+Add a new project to projects list. Asks for needed project details.
 .SH OPTIONS
 .TP
 .BR \-p ", " \-\-project =\fIPROJECTNAME\fR
