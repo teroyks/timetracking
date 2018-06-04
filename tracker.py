@@ -64,6 +64,11 @@ def print_report():
     started = {}
     daily_totals = {}
 
+    try:
+        round_to_mins = int(config.get_value("Tracker.round_minutes"))
+    except KeyError:
+        round_to_mins = 15
+
     with open(TRACKING_FILE) as f:
         for line in f:
             date, time, command, project_name = line.split()
@@ -78,7 +83,7 @@ def print_report():
                 else:
                     daily_totals[date][project_name] = \
                         daily_totals.setdefault(date, {}).get(project_name, timedelta(0)) \
-                        + _round_timedelta(elapsed, 15)
+                        + _round_timedelta(elapsed, round_to_mins)
                 del started[project_name]
 
         if started:

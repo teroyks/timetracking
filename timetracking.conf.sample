@@ -1,3 +1,9 @@
+[Tracker]
+# round reported values up to a minute amount
+round_minutes: 15
+
 [Files]
+# all projects that can be tracked
 projects_file: projects.json
+# file where tracking start and end times are logged
 tracking_file: hours.log
