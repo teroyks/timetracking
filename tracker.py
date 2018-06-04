@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 import config
 import math
 
-TRACKING_FILE = config.get_value("tracking_file")
+TRACKING_FILE = config.get_value("Files.tracking_file")
 
 def currently_tracked_projects():
     """Lists all projects that are currently being tracked.

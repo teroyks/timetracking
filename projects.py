@@ -8,7 +8,7 @@ import unittest
 
 import config
 
-PROJECTS_FILE = config.get_value("projects_file")
+PROJECTS_FILE = config.get_value("Files.projects_file")
 
 class ProjectError(Exception):
     """Generic exception for the projects module"""
