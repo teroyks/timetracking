@@ -5,6 +5,7 @@ Usage:
   timetracking -p PROJECTNAME [-c] start
   timetracking [-p PROJECTNAME] end
   timetracking [-a] list
+  timetracking report
   timetracking add
   timetracking -h
 
@@ -54,6 +55,8 @@ def main(argv):
             tracker.stop(project_name)
         else:
             tracker.stop_all()
+    elif args['report']:
+        tracker.print_report()
     elif args['add']:
         add_new_project()
 

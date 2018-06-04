@@ -59,7 +59,7 @@ def stop(project_name):
     
     _log_command("STOP", project_name)
 
-def report():
+def print_report():
     """Creates a report for time used in projects"""
     started = {}
     daily_totals = {}
@@ -112,4 +112,4 @@ def _round_timedelta(delta, round_to_mins):
     return timedelta(hours=hours, minutes=mins)
 
 if __name__ == "__main__":
-    report()
+    print_report()

@@ -1,6 +1,9 @@
 complete --command timetracking --exclusive --short-option p --long-option project --arguments "(timetracking list)" --description "select project"
 complete --command timetracking --no-files --short-option c --long-option continue --description "also continue tracking other projects"
-complete --command timetracking --no-files --arguments "start end list"
+complete --command timetracking --no-files --arguments start --description "start tracking a project"
+complete --command timetracking --no-files --arguments end --description "end tracking project(s)"
+complete --command timetracking --no-files --arguments list --description "list projects"
+complete --command timetracking --no-files --arguments report --description "show time tracking report"
 complete --command timetracking --no-files --arguments add --description "add project to project list"
 complete --command timetracking --no-files --short-option a --long-option active --description "only active projects"
 
