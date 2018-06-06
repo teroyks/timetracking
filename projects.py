@@ -6,9 +6,10 @@ import os.path
 import sys
 import unittest
 
-import config
+from config import Config
 
-PROJECTS_FILE = config.get_value("Files.projects_file")
+CONFIG = Config()
+PROJECTS_FILE = CONFIG.value('Files.projects_file')
 
 class ProjectError(Exception):
     """Generic exception for the projects module"""

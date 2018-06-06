@@ -8,10 +8,11 @@ STOP  - stops tracking
 
 from datetime import datetime, timedelta
 
-import config
+from config import Config
 import math
 
-TRACKING_FILE = config.get_value("Files.tracking_file")
+CONFIG = Config()
+TRACKING_FILE = CONFIG.value('Files.tracking_file')
 
 def currently_tracked_projects():
     """Lists all projects that are currently being tracked.
@@ -65,7 +66,7 @@ def print_report():
     daily_totals = {}
 
     try:
-        round_to_mins = int(config.get_value("Tracker.round_minutes"))
+        round_to_mins = int(CONFIG.value('Tracker.round_minutes'))
     except KeyError:
         round_to_mins = 15
 
