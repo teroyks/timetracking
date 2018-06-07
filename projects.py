@@ -1,5 +1,10 @@
 #!/usr/bin/env python
-"""Handles the projects list"""
+"""Handles the projects list
+
+Project format: { "projectname": { <properties> }}
+
+Properties format is for future data, currently empty.
+"""
 
 import json
 import os.path
