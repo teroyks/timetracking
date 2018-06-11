@@ -9,7 +9,7 @@ import unittest
 class Config():
     _file = 'timetracking.conf'
 
-    def __init__(self, file = None):
+    def __init__(self, file=None):
         if file:
             self._file = file
 

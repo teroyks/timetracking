@@ -67,7 +67,7 @@ def _write_projects_file(contents):
     global _data
 
     with open(PROJECTS_FILE, "w", encoding="utf-8") as f:
-        json.dump(contents, f, sort_keys = True, indent = 2)
+        json.dump(contents, f, sort_keys=True, indent=2)
     _data = {} # reset cache
 
 class TestProjectFileHandling(unittest.TestCase):
